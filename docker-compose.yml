@@ -1,0 +1,25 @@
+version: '2.1'
+services:
+
+   db:
+      image: postgres:9.5
+      mem_limit: 1500m
+      environment:
+          POSTGRES_USER: sample
+          POSTGRES_PASSWORD: sample
+          PGDATA: /var/lib/postgresql/data/pgdata
+          POSTGRES_DB: sample
+      ports:
+        - "5432:5432"
+
+   flyway:
+       build:
+         context: ../
+         dockerfile: /db-migration/Dockerfile
+       environment:
+         - HOST=jdbc:postgresql://db:5432/sample
+         - PORT=5432
+         - DATABASE=bookstore
+         - SCHEMA=books
+         - USERNAME=sample
+         - PASSWORD=sample
